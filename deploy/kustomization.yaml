@@ -1,0 +1,6 @@
+namespace: kapilogin
+resources:
+- namespace.yaml
+- rbac.yaml
+- deployment.yaml
+- service.yaml

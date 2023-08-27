@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  kapilogin
+spec:
+  selector:
+    matchLabels:
+      app: kapilogin
+  template:
+    metadata:
+      labels:
+        app:  kapilogin
+    spec:
+      serviceAccountName: kapilogin
+      containers:
+      - name:  kapilogin
+        image:  gcr.io/aamoyel/kapilogin:v0.1.0
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "8M"
+        env:
+        - name:  APP_PORT
+          value:  "8080"   
+        ports:
+        - name:  http
+          containerPort:  8080
