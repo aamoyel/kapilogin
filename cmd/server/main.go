@@ -26,7 +26,6 @@ func main() {
 func ClusterHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		// Just send out the JSON version of 'tom'
 		j, _ := json.Marshal(cluster.GetClusterList())
 		w.Write(j)
 	default:
