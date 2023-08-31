@@ -2,8 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 
@@ -20,7 +19,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", ClusterHandler)
-	log.Fatal(http.ListenAndServe(appPort, nil))
+	slog.Error("", http.ListenAndServe(appPort, nil))
 }
 
 func ClusterHandler(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +29,6 @@ func ClusterHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(j)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		fmt.Printf("Method not allowed, Request: %v", r)
+		slog.Error("Method not allowed, Request: %+v", r)
 	}
 }
