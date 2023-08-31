@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"log/slog"
+
 	"github.com/spf13/cobra"
 
 	"github.com/aamoyel/kapilogin/cmd/client/pkg/config"
@@ -17,8 +20,16 @@ func init() {
 	getCmd.AddCommand(getClustersCmd)
 }
 
-func runGet(cmd *cobra.Command, args []string) (err error) {
-	cfgUri, _ = cmd.Flags().GetString("config")
-	_, err = config.GetConfig(cfgUri)
+func runGet(cmd *cobra.Command, args []string) error {
+	cfgUri, err := cmd.Flags().GetString("config")
+	if err != nil {
+		slog.Error("Error when getting 'config' flag value: %v", err)
+	}
+	config, err := config.GetConfig(cfgUri)
+	if err != nil {
+		slog.Error("Error at config retrieval: %w", err)
+	}
+
+	fmt.Printf("%+v\n", config)
 	return nil
 }
