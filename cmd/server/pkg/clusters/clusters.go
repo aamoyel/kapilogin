@@ -27,6 +27,7 @@ func GetClusterList() []Cluster {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	// creates the dyn client
 	dynclient, err := dynamic.NewForConfig(config)
 	if err != nil {

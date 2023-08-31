@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/aamoyel/kapilogin/cmd/server/pkg/cluster"
+	"github.com/aamoyel/kapilogin/cmd/server/pkg/clusters"
 )
 
 func main() {
