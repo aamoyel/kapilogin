@@ -22,9 +22,7 @@ func Execute() {
 	}
 }
 
-var (
-	cfgUri string
-)
+var cfgUri string
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&cfgUri, "config", "c", "", "Path to kapilogin configuration or to a remote url (i.e. https://example.com/kapilogin.yaml), KAPILOGIN_CONFIG environment variable overrides this flag")
