@@ -6,8 +6,7 @@ import (
 
 var getCmd = &cobra.Command{
 	Use:   "get",
-	Short: "get subcommand",
-	Long:  `Allows you to get your clusters list and kubeconfig files`,
+	Short: "Allows you to get your clusters and kubeconfig files",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},

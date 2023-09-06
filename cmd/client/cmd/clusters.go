@@ -12,8 +12,7 @@ import (
 
 var getClustersCmd = &cobra.Command{
 	Use:   "clusters",
-	Short: "clusters subcommand",
-	Long:  `Get a list of Kubernetes clusters managed by Cluster API`,
+	Short: "Get a list of Kubernetes clusters managed by Cluster API",
 	RunE:  runClusters,
 }
 

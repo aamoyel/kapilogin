@@ -9,8 +9,8 @@ kind: ClusterRole
 metadata:
   name: capi-clusters-reader
 rules:
-- apiGroups: ["cluster.x-k8s.io"]
-  resources: ["clusters"]
+- apiGroups: ["cluster.x-k8s.io", ""]
+  resources: ["clusters", "secrets"]
   verbs: ["get", "watch", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

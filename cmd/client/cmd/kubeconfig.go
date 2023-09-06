@@ -15,8 +15,7 @@ import (
 
 var getKubeconfigCmd = &cobra.Command{
 	Use:   "kubeconfig",
-	Short: "kubeconfig subcommand",
-	Long:  `Get the Kubeconfig of a Kubernetes cluster managed by Cluster API`,
+	Short: "Get the Kubeconfig of a Kubernetes cluster managed by Cluster API",
 	RunE:  runKubeconfig,
 }
 
