@@ -7,20 +7,13 @@ import (
 )
 
 func TestGetConfig(t *testing.T) {
-	const configVarName string = "KAPILOGIN_CONFIG"
-
 	for _, test := range []struct {
 		description        string
-		configVar          string
-		configVarValue     string
-		configFlagValue    string
-		shouldInjectEnvVar bool
+		config Config
 	}{
 		{
-			description:        "Should return error when env var and flag are not set",
-			configVar:          configVarName,
-			configVarValue:     "",
-			shouldInjectEnvVar: false,
+			description:        "Should return error when required field is empty or not set",
+			// TODO test config
 		},
 	} {
 		t.Run(test.description, func(t *testing.T) {

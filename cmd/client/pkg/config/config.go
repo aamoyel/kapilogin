@@ -11,6 +11,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const _configVarName string = "KAPILOGIN_CONFIG"
+
 type Config struct {
 	KapiloginApiEndpoint string `json:"kapiloginApiEndpoint,omitempty" yaml:"kapiloginApiEndpoint,omitempty"`
 	OidcIssuerUrl        string `json:"oidcIssuerUrl,omitempty" yaml:"oidcIssuerUrl,omitempty"`
@@ -19,13 +21,13 @@ type Config struct {
 }
 
 func GetConfig(cfgUri string) (*Config, error) {
-	envValue, exists := os.LookupEnv("KAPILOGIN_CONFIG")
+	envValue, exists := os.LookupEnv(_configVarName)
 	if exists {
 		cfgUri = envValue
 	}
 
 	if cfgUri == "" {
-		return nil, errors.New("Error: KAPILOGIN_CONFIG and config flag is empty. Use 'kapilogin [command] --help' for more information about a command\n")
+		return nil, errors.New("Error: " + _configVarName + " and config flag is empty. Use 'kapilogin [command] --help' for more information about a command\n")
 	}
 
 	file, err := os.Open(cfgUri)
@@ -55,6 +57,10 @@ func GetConfig(cfgUri string) (*Config, error) {
 		}
 	default:
 		return nil, errors.New("invalid server configuration file extension, supported: .json|.yml|.yaml")
+	}
+
+	if config.KapiloginApiEndpoint == "" || config.OidcClientId == "" || config.OidcIssuerUrl == "" {
+		return nil, fmt.Errorf("configuration file is invalid, required fields is not set, empy or misspelled %+v", config)
 	}
 
 	c := config
