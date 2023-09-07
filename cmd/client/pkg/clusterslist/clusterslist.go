@@ -1,4 +1,4 @@
-package config
+package clusterslist
 
 import (
 	"encoding/json"

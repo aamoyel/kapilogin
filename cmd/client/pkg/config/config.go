@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -30,15 +32,28 @@ func GetConfig(cfgUri string) (*Config, error) {
 		return nil, errors.New("Error: " + _configVarName + " and config flag is empty. Use 'kapilogin [command] --help' for more information about a command\n")
 	}
 
-	file, err := os.Open(cfgUri)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
+	var fileAsBytes []byte
+	if strings.HasPrefix(cfgUri, "http") {
+		response, err := http.Get(cfgUri)
+		if err != nil {
+			return nil, err
+		}
 
-	fileAsBytes, err := io.ReadAll(file)
-	if err != nil {
-		return nil, err
+		fileAsBytes, err = io.ReadAll(response.Body)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		file, err := os.Open(cfgUri)
+		if err != nil {
+			return nil, err
+		}
+		defer file.Close()
+
+		fileAsBytes, err = io.ReadAll(file)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var (
