@@ -55,7 +55,7 @@ You need to have :
     ```sh
      kubectl -n kapilogin get svc kapilogin -o json | jq '.status.loadBalancer.ingress[0].ip'
     ```
-2. To authenticate with your clusters and define Kapilogin API endpoint, you need to configure Kapilogin. You can use an url to the raw file (ex: https://raw.githubusercontent.com/project/main/kapilogin.yaml) or directly create the file on you system with the command below:
+2. To authenticate on your clusters and define Kapilogin API endpoint, you need to configure Kapilogin. You can use an url to the raw file (eg: https://raw.githubusercontent.com/project/main/kapilogin.yaml) or directly create the file on you system with the command below:
     ```sh
     cat <<EOF > $HOME/.kapilogin.yaml
     kapiloginApiEndpoint: KAPILOGIN_API_ENDPOINT # LoadBalancer IP
