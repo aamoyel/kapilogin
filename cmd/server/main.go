@@ -25,7 +25,11 @@ func main() {
 func ClusterHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		j, _ := json.Marshal(cluster.GetClusterList())
+		cl, err := cluster.GetClusterList()
+		if err != nil {
+			w.WriteHeader(500)
+		}
+		j, _ := json.Marshal(cl)
 		w.Write(j)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)

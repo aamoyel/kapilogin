@@ -9,7 +9,7 @@ import (
 	cluster "github.com/aamoyel/kapilogin/cmd/server/pkg/clusters"
 )
 
-func GetClusters(config *config.Config) ([]cluster.Cluster, error) {
+func GetClusters(config *config.Config) ([]*cluster.Cluster, error) {
 	response, err := http.Get(config.KapiloginApiEndpoint)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,8 @@ func GetClusters(config *config.Config) ([]cluster.Cluster, error) {
 		return nil, err
 	}
 
-	var responseObject []cluster.Cluster
+	defer response.Body.Close()
+	var responseObject []*cluster.Cluster
 	err = json.Unmarshal(responseData, &responseObject)
 	if err != nil {
 		return nil, err
