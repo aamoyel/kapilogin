@@ -29,7 +29,7 @@ func GetConfig(cfgUri string) (*Config, error) {
 	}
 
 	if cfgUri == "" {
-		return nil, errors.New("Error: " + _configVarName + " and config flag is empty. Use 'kapilogin [command] --help' for more information about a command\n")
+		return nil, errors.New("empty config envVar/flag: " + _configVarName + " . Use 'kapilogin [command] --help' for more information about a command\n")
 	}
 
 	var fileAsBytes []byte

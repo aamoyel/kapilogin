@@ -21,7 +21,7 @@ type Cluster struct {
 	CaCert   string `json:"cacert"`
 }
 
-func GetClusterList() []Cluster {
+func GetClusterList() ([]*Cluster, error) {
 	// creates the in-cluster config
 	config, err := rest.InClusterConfig()
 	if err != nil {
@@ -44,19 +44,21 @@ func GetClusterList() []Cluster {
 	cls, err := dynclient.Resource(clusterGvk).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		slog.Error("error getting resource from dynamic client, err: %+v", err.Error())
+		return nil, err
 	}
 
 	var clusters clusterv1.ClusterList
-	err = runtime.DefaultUnstructuredConverter.FromUnstructured(cls.UnstructuredContent(), &clusters)
-	if err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(cls.UnstructuredContent(), &clusters); err != nil {
 		slog.Error("error converting unstructured obj to 'ClusterList' type, err: %+v", err.Error())
+		return nil, err
 	}
 
-	var clusterList []Cluster
+	var clusterList = make([]*Cluster, 0, len(clusters.Items))
 	for _, cluster := range clusters.Items {
 		secret, err := clientset.CoreV1().Secrets(cluster.GetNamespace()).Get(context.TODO(), cluster.GetName()+"-ca", metav1.GetOptions{})
 		if err != nil {
 			slog.Error("Error when getting ca cert secret: %+v", err)
+			return nil, err
 		}
 
 		var c = Cluster{
@@ -64,8 +66,8 @@ func GetClusterList() []Cluster {
 			Endpoint: "https://" + cluster.Spec.ControlPlaneEndpoint.Host + ":" + strconv.Itoa(int(cluster.Spec.ControlPlaneEndpoint.Port)),
 			CaCert:   string(secret.Data["tls.crt"]),
 		}
-		clusterList = append(clusterList, c)
+		clusterList = append(clusterList, &c)
 	}
 
-	return clusterList
+	return clusterList, nil
 }
