@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/aamoyel/kapilogin/cmd/server/pkg/clusters"
+	cluster "github.com/aamoyel/kapilogin/cmd/server/pkg/clusters"
 )
 
 func main() {
@@ -29,7 +29,11 @@ func ClusterHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			w.WriteHeader(500)
 		}
-		j, _ := json.Marshal(cl)
+		j, err := json.Marshal(cl)
+		if err != nil {
+			slog.Error("request marshaling failed: %+v", err)
+			w.WriteHeader(500)
+		}
 		w.Write(j)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
